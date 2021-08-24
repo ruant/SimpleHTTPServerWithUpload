@@ -63,7 +63,14 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     """
  
     server_version = "SimpleHTTPWithUpload/" + __version__
- 
+
+    def end_headers(self):
+        self.send_cors_headers()
+        http.server.BaseHTTPRequestHandler.end_headers(self)
+
+    def send_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+
     def do_GET(self):
         """Serve a GET request."""
         f = self.send_head()
